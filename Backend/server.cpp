@@ -1,4 +1,5 @@
 #include "server.h"
+#define DEBUG_MODE 1  // 1 для включения, 0 для отключения
 
 // Объявление функции для обработки клиентского запроса
 int main() {
@@ -35,10 +36,14 @@ int main() {
       return 1;
     }
 
+    // Вызываем функцию для обработки клиентского запроса с проверкой макроса
+#if DEBUG_MODE
+    std::cout << "Debug: Handling client request..." << std::endl;
+#endif
+
     // Вызываем функцию для обработки клиентского запроса
     ClientRequest(client_socket);
   }
-
   close(sockfd);
   return 0;
 }
@@ -52,13 +57,13 @@ void ClientRequest(int client_socket) {
   std::string request_body;  // Создаем переменную для хранения тела запроса
 
   // Парсинг Боди-запроса
-  //   do {
-  //     bytesRead = recv(client_socket, buf, max_client_buffer_size, 0);
-  //     if (bytesRead > 0) {
-  //       request_body.append(buf, bytesRead);
-  //       bytesRead--;  // Добавляем данные к переменной request_body
-  //     }
-  //   } while (bytesRead > 0);
+  do {
+    bytesRead = recv(client_socket, buf, max_client_buffer_size, 0);
+    if (bytesRead > 0) {
+      request_body.append(
+          buf, bytesRead);  // Добавляем данные к переменной request_body
+    }
+  } while (bytesRead > 0);
 
   // Выводим тело запроса на стандартный вывод (для демонстрации)
   std::cout << "HTTP Request Body:\n" << request_body << std::endl;
@@ -90,7 +95,6 @@ void ClientRequest(int client_socket) {
   file.close();  // Закрываем файл
 
   // Остальной код для отправки данных клиенту остается без изменений
-  //   if ()
   response << "HTTP/1.1 200 OK\r\n"
            << "Version: HTTP/1.1\r\n"
            << "Content-Type: text/html; charset=utf-8\r\n"
@@ -103,6 +107,9 @@ void ClientRequest(int client_socket) {
   if (send_result == -1) {
     std::cerr << "Error sending data" << std::endl;
   }
+#if DEBUG_MODE
+  std::cout << "Debug: Received request body:\n" << request_body << std::endl;
+#endif
 
   close(client_socket);
 }
