@@ -1,5 +1,10 @@
 #include "server.h"
-#define DEBUG_MODE 1  // 1 для включения, 0 для отключения
+#define DEBUG_MODE 0  // 1 для включения, 0 для отключения
+
+// IP-адрес и порт, на которых сервер будет слушать
+const char* listenAddress =
+    "51.159.221.215";  // 0.0.0.0 слушает все доступные IP-адреса
+const int listenPort = 80;
 
 // Объявление функции для обработки клиентского запроса
 int main() {
@@ -13,9 +18,11 @@ int main() {
     return 1;
   }
 
+  struct sockaddr_in server_address;
+  bzero((char*)&server_address, sizeof(server_address));
   server_address.sin_family = AF_INET;
-  server_address.sin_port = htons(8000);  // Порт сервера
-  server_address.sin_addr.s_addr = INADDR_ANY;
+  server_address.sin_port = htons(listenPort);
+  server_address.sin_addr.s_addr = inet_addr(listenAddress);
 
   if (bind(sockfd, (struct sockaddr*)&server_address, sizeof(server_address)) <
       0) {
@@ -65,12 +72,12 @@ void ClientRequest(int client_socket) {
     }
   } while (bytesRead > 0);
 
-  // Выводим тело запроса на стандартный вывод (для демонстрации)
+  // // Выводим тело запроса на стандартный вывод (для демонстрации)
   std::cout << "HTTP Request Body:\n" << request_body << std::endl;
 
-  // Открываем файл для чтения
+  // // Открываем файл для чтения
   std::ifstream file(
-      "Test_files/aaaa.html");  // Замените "example.txt" на имя вашего файла
+      "aaaa.html");  // Замените "example.txt" на имя вашего файла
 
   if (!file.is_open()) {
     std::cerr << "Error opening file" << std::endl;
