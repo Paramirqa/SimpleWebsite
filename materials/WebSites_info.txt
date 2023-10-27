@@ -1,3 +1,6 @@
 https://code-live.ru/post/cpp-http-server-over-sockets/- Туториал по сокетам 
 https://habr.com/ru/articles/318916/ - Веб-сайт на ассемблере
 https://github.com/tpn/winsdk-10/blob/master/Include/10.0.10240.0/um/WinSock2.h - библиотека для сокетов
+https://admin812.ru/faylovyiy-server-iz-nginx.html - Настройка nginx как ftp
+https://www.mytechnote.ru/article/kak-nastroit-veb-server-na-ubuntu-1804-nginx-php-fpm-phpmyadmin-vsftpd - Как настроить веб сервер на 
+                                                                                                        Ubuntu 18.04 [Nginx + PHP-FPM + phpMyAdmin + vsftpd]
